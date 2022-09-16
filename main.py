@@ -100,5 +100,7 @@ if __name__ == '__main__':
         if game_over == True:
             break
 
+        [exit() for i in pygame.event.get() if i.type == pygame.QUIT]
+
     print('Final Score', score)
     pygame.quit()
