@@ -1,16 +1,29 @@
-# This is a sample Python script.
+import pygame
+import random
 
-# Press Umschalt+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
-
-
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Strg+F8 to toggle the breakpoint.
+pygame.init()
 
 
-# Press the green button in the gutter to run the script.
+class SnakeGame:
+
+    def __init__(self, w=640, h=480):
+        self.w, self.h = w, h
+
+        # init display
+
+        # init game state
+
+    def play_step(self):
+        pass
+
+
 if __name__ == '__main__':
-    print_hi('PyCharm')
+    game = SnakeGame()
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+    # game loop
+    while True:
+        game.play_step()
+
+        # break if game over
+
+    pygame.quit()
