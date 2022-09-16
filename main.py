@@ -17,7 +17,7 @@ class Direction(Enum):
 Point = namedtuple('Point', 'x, y')
 
 BLOCK_SIZE = 20
-SPEED = 40
+SPEED = 20
 
 # rgb Colors
 WHITE = (255, 255, 255)
@@ -59,19 +59,70 @@ class SnakeGame:
 
     def play_step(self):
         # 1. collect user input
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                quit()
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_LEFT:
+                    self.direction = Direction.LEFT
+                elif event.key == pygame.K_RIGHT:
+                    self.direction = Direction.RIGHT
+                elif event.key == pygame.K_UP:
+                    self.direction = Direction.UP
+                elif event.key == pygame.K_DOWN:
+                    self.direction = Direction.DOWN
 
         # 2. move
+        self._move(self.direction)  # update head position
+        self.snake.insert(0, self.head)
 
         # 3. check if game over
+        game_over = False
+        if self._is_collision():
+            game_over = True
+            return game_over, self.score
+
 
         # 4. place new food or just move
-
+        if self.head == self.food:
+            self.score += 1
+            self._place_food()
+        else:
+            self.snake.pop()
         # 5. update ui and clock
         self._update_ui()
-        # self._update_tick(SPEED)
+        self.clock.tick(SPEED)
         # 6. return game over and score
         game_over = False
         return game_over, self.score
+
+    def _is_collision(self):
+        # hits boundary
+        if self.head.x > self.w - BLOCK_SIZE or \
+                self.head.x < 0 or \
+                self.head.x < 0 or \
+                self.head.y > self.h - BLOCK_SIZE or self.head.y < 0:
+            return True
+        # hits itself
+        if self.head in self.snake[1:]: # skip first (first = equal cell)
+            return True
+
+        return False
+
+    def _move(self, direction):
+        x = self.head.x
+        y = self.head.y
+        if direction == Direction.RIGHT:
+            x += BLOCK_SIZE
+        elif direction == Direction.LEFT:
+            x -= BLOCK_SIZE
+        elif direction == Direction.UP:
+            y -= BLOCK_SIZE
+        elif direction == Direction.DOWN:
+            y += BLOCK_SIZE
+
+        self.head = Point(x, y)
 
     def _update_ui(self):
         self.display.fill(BLACK)
@@ -99,8 +150,6 @@ if __name__ == '__main__':
         # break if game over
         if game_over == True:
             break
-
-        [exit() for i in pygame.event.get() if i.type == pygame.QUIT]
 
     print('Final Score', score)
     pygame.quit()
