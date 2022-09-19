@@ -1,9 +1,11 @@
-# Snake_Reinforcement_AI_Python
+# Snake Reinforcement AI Python
 Experiment with the Reinforcement tequnice applied to the snake game in a pygame environment
 ## Technologies
 Python, Pygame and PyTorch
 
 ## (Deep) Q Learning
+https://www.freecodecamp.org/news/diving-deeper-into-reinforcement-learning-with-q-learning-c18d0db58efe/
+
 Q Value = Quality of action
 0. Init Q Value (= init model)
 1. Choose action (model.predict(state))
