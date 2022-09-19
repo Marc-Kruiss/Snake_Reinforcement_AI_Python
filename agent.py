@@ -1,3 +1,5 @@
+import os
+
 import torch
 import random
 import numpy as np
@@ -19,6 +21,10 @@ class Agent:
         self.memory = deque(maxlen=MAX_MEMORY)  # popleft()
         self.model = Linear_QNet(11, 256, 3)  # input-/hidden-/output-size
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
+        self.last_record = 0
+
+        # load model
+        self.load_model()
 
     def get_state(self, game):
         # Create 4 points around the head
@@ -98,13 +104,28 @@ class Agent:
 
         return final_move
 
+    def load_model(self, file_name='model.pth'):
+        model_folder_path = './model'
+        file_path = os.path.join(model_folder_path, file_name)
+        if os.path.exists(file_path):
+            print("Load existing model", file_name)
+            checkpoint = torch.load(file_path)
+            self.model.load_state_dict(checkpoint['model_state_dict'])
+            self.trainer.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
+            self.n_games = checkpoint['epoch']
+            self.last_record = checkpoint['record']
+            self.model.eval()
+            print(f"Checkpoint: n_games: {self.n_games} record: {self.last_record}")
+        else:
+            print("No existing model found")
+
 
 def train():
     plot_scores = []
     plot_mean_scores = []
     total_score = 0
-    record = 0
     agent = Agent()
+    record = agent.last_record
     game = SnakeGameAI()
     while True:
         # get old state
@@ -131,7 +152,10 @@ def train():
 
             if score > record:
                 record = score
-                agent.model.save()
+                agent.model.save(epoch=agent.n_games,
+                                 record=record,
+                                 model_state_dict=agent.model.state_dict(),
+                                 optimizer_state_dict=agent.trainer.optimizer.state_dict())
 
             print('Game', agent.n_games, 'Score', score, 'Record', record)
 
