@@ -6,7 +6,7 @@ Python, Pygame and PyTorch
 ## (Deep) Q Learning
 https://www.freecodecamp.org/news/diving-deeper-into-reinforcement-learning-with-q-learning-c18d0db58efe/
 
-Q Value = Quality of action
+**Q Value** = Quality of action
 0. Init Q Value (= init model)
 1. Choose action (model.predict(state))
 2. Perform action
@@ -15,9 +15,9 @@ Q Value = Quality of action
 5. Repeat 1.
 
 ## Bellman Equation
-Update Q using the Bellman Equation
+Update Q-Value using the Bellman Equation
 
-NewQ(s,a) = Q(s,a) + α[R(s,a) + φ*maxQ'(s',a') - Q(s,a)]
+`NewQ(s,a) = Q(s,a) + α[R(s,a) + φ*maxQ'(s',a') - Q(s,a)]`
 * NewQ(s,a).. New Q value for that state and that action
 * Q(s,a)... Current Q value
 * α... Learning rate

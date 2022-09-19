@@ -42,7 +42,7 @@ class SnakeGameAI:
 
         # init display
         self.display = pygame.display.set_mode((self.w, self.h))
-        pygame.display.set_caption("Snake")
+        pygame.display.set_caption("Snake AI")
         self.clock = pygame.time.Clock()
 
         self.reset()
@@ -129,7 +129,7 @@ class SnakeGameAI:
         elif np.array_equal(action, [0, 1, 0]):
             next_idx = (idx + 1) % 4  # When UP (idx:4), we start at 0 again
             new_dir = clock_wise[next_idx]  # right turn (r -> d -> l -> u)
-        else: # [0,0,1]
+        else:  # [0,0,1]
             next_idx = (idx - 1) % 4  # When UP (idx:4), we start at 0 again
             new_dir = clock_wise[next_idx]  # left turn (r -> u -> l -> d)
 
