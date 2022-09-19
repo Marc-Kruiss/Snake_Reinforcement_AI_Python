@@ -21,7 +21,10 @@ class Agent:
         self.memory = deque(maxlen=MAX_MEMORY)  # popleft()
         self.model = Linear_QNet(11, 256, 3)  # input-/hidden-/output-size
         self.trainer = QTrainer(self.model, lr=LR, gamma=self.gamma)
+
         self.last_record = 0
+        self.plot_scores = []
+        self.plot_mean_scores = []
 
         # load model
         self.load_model()
@@ -114,6 +117,8 @@ class Agent:
             self.trainer.optimizer.load_state_dict(checkpoint['optimizer_state_dict'])
             self.n_games = checkpoint['epoch']
             self.last_record = checkpoint['record']
+            self.plot_mean_scores = checkpoint['plot_mean_scores']
+            self.plot_scores = checkpoint['plot_scores']
             self.model.eval()
             print(f"Checkpoint: n_games: {self.n_games} record: {self.last_record}")
         else:
@@ -155,7 +160,9 @@ def train():
                 agent.model.save(epoch=agent.n_games,
                                  record=record,
                                  model_state_dict=agent.model.state_dict(),
-                                 optimizer_state_dict=agent.trainer.optimizer.state_dict())
+                                 optimizer_state_dict=agent.trainer.optimizer.state_dict(),
+                                 plot_scores=plot_scores,
+                                 plot_mean_scores=plot_mean_scores)
 
             print('Game', agent.n_games, 'Score', score, 'Record', record)
 

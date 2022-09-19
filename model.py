@@ -16,7 +16,7 @@ class Linear_QNet(nn.Module):
         x = self.linear2(x)
         return x
 
-    def save(self, epoch, record, model_state_dict, optimizer_state_dict, file_name='model.pth'):
+    def save(self, epoch, record, model_state_dict, optimizer_state_dict,plot_scores,plot_mean_scores, file_name='model.pth'):
         model_folder_path = './model'
         if not os.path.exists(model_folder_path):
             os.makedirs(model_folder_path)
@@ -26,7 +26,9 @@ class Linear_QNet(nn.Module):
             'epoch': epoch,
             'record': record,
             'model_state_dict': model_state_dict,
-            'optimizer_state_dict': optimizer_state_dict
+            'optimizer_state_dict': optimizer_state_dict,
+            'plot_scores': plot_scores,
+            'plot_mean_scores': plot_mean_scores
         }, file_name)
 
 
